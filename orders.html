@@ -3,30 +3,25 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Orders | Print & Craft Management System</title>
+<title>Orders | Print & Craft Management System</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
 <div class="wrapper">
-
-<!-- SIDEBAR -->
 
 <aside class="sidebar">
 
@@ -94,8 +89,6 @@
 
 </aside>
 
-<!-- MAIN -->
-
 <main class="main">
 
 <div class="topbar">
@@ -125,9 +118,10 @@ New Order
 
 <div class="table-header">
 
-<h4>Orders</h4>
+<h4>Orders List</h4>
 
 <input
+id="searchInput"
 type="text"
 class="form-control"
 style="width:250px"
@@ -149,9 +143,11 @@ placeholder="Search Order">
 
 <th>Product</th>
 
+<th>Date Ordered</th>
+
 <th>Total</th>
 
-<th>Status</th>
+<th>Production Status</th>
 
 <th>Action</th>
 
@@ -171,13 +167,15 @@ placeholder="Search Order">
 
 <td>30 Polaroids</td>
 
+<td>June 29, 2026</td>
+
 <td>₱350</td>
 
 <td>
 
 <span class="badge bg-warning">
 
-Pending
+Waiting for Photos
 
 </span>
 
@@ -185,9 +183,27 @@ Pending
 
 <td>
 
-<button class="btn btn-primary btn-sm">
+<button
+class="btn btn-primary btn-sm"
+onclick="viewOrder(this)">
 
 View
+
+</button>
+
+<button
+class="btn btn-success btn-sm"
+onclick="editOrder(this)">
+
+Edit
+
+</button>
+
+<button
+class="btn btn-danger btn-sm"
+onclick="deleteOrder(this)">
+
+Delete
 
 </button>
 
@@ -205,6 +221,8 @@ View
 
 <td>Bracelet</td>
 
+<td>June 29, 2026</td>
+
 <td>₱520</td>
 
 <td>
@@ -219,21 +237,39 @@ Completed
 
 <td>
 
-<button class="btn btn-primary btn-sm">
+<button
+class="btn btn-primary btn-sm"
+onclick="viewOrder(this)">
 
 View
+
+</button>
+
+<button
+class="btn btn-success btn-sm"
+onclick="editOrder(this)">
+
+Edit
+
+</button>
+
+<button
+class="btn btn-danger btn-sm"
+onclick="deleteOrder(this)">
+
+Delete
 
 </button>
 
 </td>
 
 </tr>
-
 </tbody>
 
 </table>
 
 </div>
+
 <!-- NEW ORDER MODAL -->
 
 <div class="modal fade" id="newOrderModal" tabindex="-1">
@@ -275,8 +311,7 @@ Customer Name
 <input
 id="customerName"
 type="text"
-class="form-control"
-placeholder="Enter customer name">
+class="form-control">
 
 </div>
 
@@ -291,8 +326,7 @@ Phone Number
 <input
 id="phoneNumber"
 type="text"
-class="form-control"
-placeholder="09XXXXXXXXX">
+class="form-control">
 
 </div>
 
@@ -329,8 +363,7 @@ Product
 <input
 id="product"
 type="text"
-class="form-control"
-placeholder="Example: 30 Polaroids">
+class="form-control">
 
 </div>
 
@@ -368,19 +401,14 @@ class="form-control">
 
 <label class="form-label">
 
-Payment
+Date Ordered
 
 </label>
 
-<select
-id="payment"
-class="form-select">
-
-<option>Paid</option>
-
-<option>Unpaid</option>
-
-</select>
+<input
+id="dateOrdered"
+type="date"
+class="form-control">
 
 </div>
 
@@ -414,7 +442,7 @@ class="form-select">
 
 </div>
 
-<div class="col-md-12">
+<div class="col-md-12 mb-3">
 
 <label class="form-label">
 
@@ -425,8 +453,7 @@ Notes
 <textarea
 id="notes"
 rows="3"
-class="form-control"
-placeholder="Optional notes..."></textarea>
+class="form-control"></textarea>
 
 </div>
 
@@ -437,7 +464,6 @@ placeholder="Optional notes..."></textarea>
 <div class="modal-footer">
 
 <button
-type="button"
 class="btn btn-secondary"
 data-bs-dismiss="modal">
 
@@ -446,11 +472,8 @@ Cancel
 </button>
 
 <button
-type="button"
-class="btn btn-warning text-white"
-id="saveOrderBtn">
-
-<i class="fa-solid fa-floppy-disk"></i>
+id="saveOrderBtn"
+class="btn btn-warning text-white">
 
 Save Order
 
@@ -463,21 +486,22 @@ Save Order
 </div>
 
 </div>
-</main>
 
-</div>
+<!-- VIEW / EDIT ORDER MODAL -->
 
-    <!-- View Order Modal -->
+<div class="modal fade" id="viewModal" tabindex="-1">
 
-<div class="modal fade" id="viewModal">
-
-<div class="modal-dialog">
+<div class="modal-dialog modal-lg">
 
 <div class="modal-content">
 
 <div class="modal-header">
 
-<h5>Order Details</h5>
+<h5 class="modal-title">
+
+Order Details
+
+</h5>
 
 <button
 type="button"
@@ -489,17 +513,274 @@ data-bs-dismiss="modal">
 
 <div class="modal-body">
 
-<p><b>Order ID:</b> <span id="viewOrderID"></span></p>
+<div class="mb-3">
 
-<p><b>Customer:</b> <span id="viewCustomer"></span></p>
+<label>Customer</label>
 
-<p><b>Platform:</b> <span id="viewPlatform"></span></p>
+<input
+id="editCustomer"
+class="form-control">
 
-<p><b>Product:</b> <span id="viewProduct"></span></p>
+</div>
 
-<p><b>Total:</b> <span id="viewPrice"></span></p>
+<div class="mb-3">
 
-<p><b>Status:</b> <span id="viewStatus"></span></p>
+<label>Production Status</label>
+
+<select
+id="editStatus"
+class="form-select">
+
+<option>Waiting for Photos</option>
+
+<option>Layout</option>
+
+<option>Printing</option>
+
+<option>Cutting</option>
+
+<option>Packing</option>
+
+<option>Ready</option>
+
+<option>Completed</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label>Date Ordered</label>
+
+<input
+id="editDate"
+type="date"
+class="form-control">
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="btn btn-danger"
+id="deleteOrderBtn">
+
+Delete
+
+</button>
+
+<button
+class="btn btn-success"
+id="updateOrderBtn">
+
+Save Changes
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+</tbody>
+
+</table>
+
+</div>
+
+<!-- NEW ORDER MODAL -->
+
+<div class="modal fade" id="newOrderModal" tabindex="-1">
+
+<div class="modal-dialog modal-lg">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h5 class="modal-title">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+New Order
+
+</h5>
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="modal">
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Customer Name
+
+</label>
+
+<input
+id="customerName"
+type="text"
+class="form-control">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Phone Number
+
+</label>
+
+<input
+id="phoneNumber"
+type="text"
+class="form-control">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Platform
+
+</label>
+
+<select
+id="platform"
+class="form-select">
+
+<option>Facebook</option>
+
+<option>Shopee</option>
+
+<option>Walk-in</option>
+
+</select>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+
+Product
+
+</label>
+
+<input
+id="product"
+type="text"
+class="form-control">
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<label class="form-label">
+
+Quantity
+
+</label>
+
+<input
+id="quantity"
+type="number"
+class="form-control">
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<label class="form-label">
+
+Total Price
+
+</label>
+
+<input
+id="price"
+type="number"
+class="form-control">
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<label class="form-label">
+
+Date Ordered
+
+</label>
+
+<input
+id="dateOrdered"
+type="date"
+class="form-control">
+
+</div>
+
+<div class="col-md-12 mb-3">
+
+<label class="form-label">
+
+Production Status
+
+</label>
+
+<select
+id="status"
+class="form-select">
+
+<option>Waiting for Photos</option>
+
+<option>Layout</option>
+
+<option>Printing</option>
+
+<option>Cutting</option>
+
+<option>Packing</option>
+
+<option>Ready</option>
+
+<option>Completed</option>
+
+</select>
+
+</div>
+
+<div class="col-md-12 mb-3">
+
+<label class="form-label">
+
+Notes
+
+</label>
+
+<textarea
+id="notes"
+rows="3"
+class="form-control"></textarea>
+
+</div>
+
+</div>
 
 </div>
 
@@ -509,7 +790,15 @@ data-bs-dismiss="modal">
 class="btn btn-secondary"
 data-bs-dismiss="modal">
 
-Close
+Cancel
+
+</button>
+
+<button
+id="saveOrderBtn"
+class="btn btn-warning text-white">
+
+Save Order
 
 </button>
 
@@ -521,9 +810,103 @@ Close
 
 </div>
 
-<script src="orders.js"></script>
+<!-- VIEW / EDIT ORDER MODAL -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<div class="modal fade" id="viewModal" tabindex="-1">
 
-</body>
-</html>
+<div class="modal-dialog modal-lg">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h5 class="modal-title">
+
+Order Details
+
+</h5>
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="modal">
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<div class="mb-3">
+
+<label>Customer</label>
+
+<input
+id="editCustomer"
+class="form-control">
+
+</div>
+
+<div class="mb-3">
+
+<label>Production Status</label>
+
+<select
+id="editStatus"
+class="form-select">
+
+<option>Waiting for Photos</option>
+
+<option>Layout</option>
+
+<option>Printing</option>
+
+<option>Cutting</option>
+
+<option>Packing</option>
+
+<option>Ready</option>
+
+<option>Completed</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label>Date Ordered</label>
+
+<input
+id="editDate"
+type="date"
+class="form-control">
+
+</div>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="btn btn-danger"
+id="deleteOrderBtn">
+
+Delete
+
+</button>
+
+<button
+class="btn btn-success"
+id="updateOrderBtn">
+
+Save Changes
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
