@@ -1,202 +1,276 @@
-let orderCounter = 3;
+import { db } from "./firebase.js";
 
-let selectedRow = null;
+import {
+collection,
+addDoc,
+getDocs
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// SAVE ORDER
-document.getElementById("saveOrderBtn").addEventListener("click", function () {
+const ordersCollection = collection(db,"orders");
 
-    const customer = document.getElementById("customerName").value;
-    const phone = document.getElementById("phoneNumber").value;
-    const platform = document.getElementById("platform").value;
-    const product = document.getElementById("product").value;
-    const quantity = document.getElementById("quantity").value;
-    const price = document.getElementById("price").value;
-    const date = document.getElementById("dateOrdered").value;
-    const status = document.getElementById("status").value;
+const saveBtn=document.getElementById("saveOrderBtn");
 
-    if(customer=="" || product=="" || quantity=="" || price==""){
-        alert("Please complete all fields.");
-        return;
-    }
+saveBtn.addEventListener("click",saveOrder);
 
-    const table = document.getElementById("ordersTable");
+async function saveOrder(){
 
-    const row = table.insertRow();
+const customer=document.getElementById("customerName").value;
+const phone=document.getElementById("phoneNumber").value;
+const platform=document.getElementById("platform").value;
+const product=document.getElementById("product").value;
+const quantity=document.getElementById("quantity").value;
+const price=document.getElementById("price").value;
+const date=document.getElementById("dateOrdered").value;
+const status=document.getElementById("status").value;
+const notes=document.getElementById("notes").value;
 
-    row.innerHTML=`
+if(customer==""||product==""){
 
-    <td>ORD-${String(orderCounter).padStart(4,'0')}</td>
+alert("Complete the form.");
 
-    <td>${customer}</td>
-
-    <td>${platform}</td>
-
-    <td>${quantity} ${product}</td>
-
-    <td>${date}</td>
-
-    <td>₱${price}</td>
-
-    <td>
-        <span class="badge bg-warning">
-            ${status}
-        </span>
-    </td>
-
-    <td>
-
-    <button
-    class="btn btn-primary btn-sm"
-    onclick="viewOrder(this)">
-    View
-    </button>
-
-    <button
-    class="btn btn-success btn-sm"
-    onclick="editOrder(this)">
-    Edit
-    </button>
-
-    <button
-    class="btn btn-danger btn-sm"
-    onclick="deleteOrder(this)">
-    Delete
-    </button>
-
-    </td>
-
-    `;
-
-    orderCounter++;
-
-    document.getElementById("customerName").value="";
-    document.getElementById("phoneNumber").value="";
-    document.getElementById("product").value="";
-    document.getElementById("quantity").value="";
-    document.getElementById("price").value="";
-    document.getElementById("notes").value="";
-    document.getElementById("dateOrdered").value="";
-
-    bootstrap.Modal.getInstance(document.getElementById("newOrderModal")).hide();
-
-});
-
-// VIEW
-
-function viewOrder(btn){
-
-    const row = btn.parentElement.parentElement;
-
-    alert(
-
-`Order ID : ${row.cells[0].innerText}
-
-Customer : ${row.cells[1].innerText}
-
-Platform : ${row.cells[2].innerText}
-
-Product : ${row.cells[3].innerText}
-
-Date : ${row.cells[4].innerText}
-
-Total : ${row.cells[5].innerText}
-
-Status : ${row.cells[6].innerText}`
-
-);
+return;
 
 }
 
+await addDoc(ordersCollection,{
+
+customer,
+
+phone,
+
+platform,
+
+product,
+
+quantity,
+
+price,
+
+date,
+
+status,
+
+notes
+
+});
+
+alert("Order Saved!");
+
+bootstrap.Modal.getInstance(
+
+document.getElementById("newOrderModal")
+
+).hide();
+
+clearForm();
+
+loadOrders();
+
+}
+
+function clearForm(){
+
+document.getElementById("customerName").value="";
+document.getElementById("phoneNumber").value="";
+document.getElementById("product").value="";
+document.getElementById("quantity").value="";
+document.getElementById("price").value="";
+document.getElementById("dateOrdered").value="";
+document.getElementById("notes").value="";
+
+}
+async function loadOrders(){
+
+    const snapshot = await getDocs(ordersCollection);
+
+    const table = document.getElementById("ordersTable");
+
+    table.innerHTML = "";
+
+    let number = 1;
+
+    snapshot.forEach((doc)=>{
+
+        const order = doc.data();
+
+        table.innerHTML += `
+
+        <tr data-id="${doc.id}">
+
+            <td>ORD-${String(number).padStart(4,"0")}</td>
+
+            <td>${order.customer}</td>
+
+            <td>${order.platform}</td>
+
+            <td>${order.quantity} ${order.product}</td>
+
+            <td>${order.date}</td>
+
+            <td>₱${order.price}</td>
+
+            <td>
+
+                <span class="badge bg-warning">
+
+                    ${order.status}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button
+                    class="btn btn-primary btn-sm"
+                    onclick="viewOrder(this)">
+                    View
+                </button>
+
+                <button
+                    class="btn btn-success btn-sm"
+                    onclick="editOrder(this)">
+                    Edit
+                </button>
+
+                <button
+                    class="btn btn-danger btn-sm"
+                    onclick="deleteOrder(this)">
+                    Delete
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+        number++;
+
+    });
+
+}
+
+loadOrders();
+import {
+    doc,
+    updateDoc,
+    deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+let selectedDocId = null;
+let selectedRow = null;
+
+// VIEW
+window.viewOrder = function(button){
+
+    const row = button.closest("tr");
+
+    alert(
+`Order ID: ${row.cells[0].innerText}
+
+Customer: ${row.cells[1].innerText}
+
+Platform: ${row.cells[2].innerText}
+
+Product: ${row.cells[3].innerText}
+
+Date Ordered: ${row.cells[4].innerText}
+
+Total: ${row.cells[5].innerText}
+
+Production Status: ${row.cells[6].innerText}`
+    );
+
+};
+
 // EDIT
+window.editOrder = function(button){
 
-function editOrder(btn){
-
-    selectedRow = btn.parentElement.parentElement;
+    selectedRow = button.closest("tr");
+    selectedDocId = selectedRow.dataset.id;
 
     document.getElementById("editCustomer").value =
-    selectedRow.cells[1].innerText;
+        selectedRow.cells[1].innerText;
 
     document.getElementById("editDate").value =
-    selectedRow.cells[4].innerText;
+        selectedRow.cells[4].innerText;
 
     document.getElementById("editStatus").value =
-    selectedRow.cells[6].innerText;
+        selectedRow.cells[6].innerText.trim();
 
     new bootstrap.Modal(
         document.getElementById("viewModal")
     ).show();
 
-}
+};
 
-// SAVE EDIT
+// SAVE CHANGES
+document.getElementById("updateOrderBtn").addEventListener("click", async ()=>{
 
-document.getElementById("updateOrderBtn").addEventListener("click",function(){
+    if(!selectedDocId) return;
 
-    selectedRow.cells[1].innerText=
-    document.getElementById("editCustomer").value;
+    await updateDoc(doc(db,"orders",selectedDocId),{
 
-    selectedRow.cells[4].innerText=
-    document.getElementById("editDate").value;
+        customer: document.getElementById("editCustomer").value,
 
-    selectedRow.cells[6].innerHTML=
+        date: document.getElementById("editDate").value,
 
-    `<span class="badge bg-warning">
+        status: document.getElementById("editStatus").value
 
-    ${document.getElementById("editStatus").value}
-
-    </span>`;
+    });
 
     bootstrap.Modal.getInstance(
         document.getElementById("viewModal")
     ).hide();
 
+    loadOrders();
+
 });
 
 // DELETE
+window.deleteOrder = async function(button){
 
-function deleteOrder(btn){
+    if(!confirm("Delete this order?")) return;
 
-    if(confirm("Delete this order?")){
+    const row = button.closest("tr");
 
-        btn.parentElement.parentElement.remove();
+    const id = row.dataset.id;
 
-    }
+    await deleteDoc(doc(db,"orders",id));
 
-}
+    loadOrders();
 
-// DELETE INSIDE EDIT MODAL
+};
 
-document.getElementById("deleteOrderBtn").addEventListener("click",function(){
+// DELETE FROM EDIT MODAL
+document.getElementById("deleteOrderBtn").addEventListener("click",async()=>{
 
-    if(confirm("Delete this order?")){
+    if(!selectedDocId) return;
 
-        selectedRow.remove();
+    if(!confirm("Delete this order?")) return;
 
-        bootstrap.Modal.getInstance(
-            document.getElementById("viewModal")
-        ).hide();
+    await deleteDoc(doc(db,"orders",selectedDocId));
 
-    }
+    bootstrap.Modal.getInstance(
+        document.getElementById("viewModal")
+    ).hide();
+
+    loadOrders();
 
 });
 
 // SEARCH
-
 document.getElementById("searchInput").addEventListener("keyup",function(){
 
     const value=this.value.toLowerCase();
 
-    const rows=document.querySelectorAll("#ordersTable tr");
+    document.querySelectorAll("#ordersTable tr").forEach(row=>{
 
-    rows.forEach(row=>{
-
-        row.style.display=
-
-        row.innerText.toLowerCase().includes(value)
-
-        ? ""
-
-        : "none";
+        row.style.display =
+            row.innerText.toLowerCase().includes(value)
+            ? ""
+            : "none";
 
     });
 
