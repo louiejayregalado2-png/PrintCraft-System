@@ -30,11 +30,13 @@ document.getElementById("saveOrderBtn").addEventListener("click", function () {
         <td>${quantity} ${product}</td>
         <td>₱${price}</td>
         <td><span class="badge bg-warning">${status}</span></td>
-        <td>
-            <button class="btn btn-primary btn-sm">
-                View
-            </button>
-        </td>
+       <td>
+    <button
+        class="btn btn-primary btn-sm"
+        onclick="viewOrder(this)">
+        View
+    </button>
+</td>
     `;
 
     orderNumber++;
