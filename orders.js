@@ -55,3 +55,30 @@ document.getElementById("saveOrderBtn").addEventListener("click", function () {
 
     alert("Order saved successfully!");
 });
+function viewOrder(button){
+
+    const row = button.parentElement.parentElement;
+
+    document.getElementById("viewOrderID").innerHTML =
+        row.cells[0].innerHTML;
+
+    document.getElementById("viewCustomer").innerHTML =
+        row.cells[1].innerHTML;
+
+    document.getElementById("viewPlatform").innerHTML =
+        row.cells[2].innerHTML;
+
+    document.getElementById("viewProduct").innerHTML =
+        row.cells[3].innerHTML;
+
+    document.getElementById("viewPrice").innerHTML =
+        row.cells[4].innerHTML;
+
+    document.getElementById("viewStatus").innerHTML =
+        row.cells[5].innerText;
+
+    new bootstrap.Modal(
+        document.getElementById("viewModal")
+    ).show();
+
+}
