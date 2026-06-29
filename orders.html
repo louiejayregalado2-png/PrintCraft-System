@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>Orders - Print & Craft</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Orders | Print & Craft Management System</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-<link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
 <div class="wrapper">
+
+<!-- SIDEBAR -->
 
 <aside class="sidebar">
 
@@ -36,38 +43,58 @@
 <ul>
 
 <li onclick="location.href='index.html'">
+
 <i class="fa-solid fa-house"></i>
+
 <span>Dashboard</span>
+
 </li>
 
 <li class="active">
+
 <i class="fa-solid fa-cart-shopping"></i>
+
 <span>Orders</span>
+
 </li>
 
-<li onclick="location.href='inventory.html'">
+<li>
+
 <i class="fa-solid fa-box"></i>
+
 <span>Inventory</span>
+
 </li>
 
-<li onclick="location.href='customers.html'">
+<li>
+
 <i class="fa-solid fa-users"></i>
+
 <span>Customers</span>
+
 </li>
 
-<li onclick="location.href='reports.html'">
+<li>
+
 <i class="fa-solid fa-chart-column"></i>
+
 <span>Reports</span>
+
 </li>
 
-<li onclick="location.href='settings.html'">
+<li>
+
 <i class="fa-solid fa-gear"></i>
+
 <span>Settings</span>
+
 </li>
 
 </ul>
 
 </aside>
+
+<!-- MAIN -->
 
 <main class="main">
 
@@ -91,20 +118,20 @@ data-bs-target="#newOrderModal">
 New Order
 
 </button>
-  
+
 </div>
 
 <div class="table-card">
 
 <div class="table-header">
 
-<h4>Orders List</h4>
+<h4>Orders</h4>
 
 <input
+type="text"
 class="form-control"
 style="width:250px"
-placeholder="Search order..."
->
+placeholder="Search Order">
 
 </div>
 
@@ -120,7 +147,7 @@ placeholder="Search order..."
 
 <th>Platform</th>
 
-<th>Products</th>
+<th>Product</th>
 
 <th>Total</th>
 
@@ -132,7 +159,7 @@ placeholder="Search order..."
 
 </thead>
 
-<tbody>
+<tbody id="ordersTable">
 
 <tr>
 
@@ -158,7 +185,7 @@ Pending
 
 <td>
 
-<button class="btn btn-sm btn-primary">
+<button class="btn btn-primary btn-sm">
 
 View
 
@@ -176,7 +203,7 @@ View
 
 <td>Shopee</td>
 
-<td>Couple Bracelet</td>
+<td>Bracelet</td>
 
 <td>₱520</td>
 
@@ -192,7 +219,7 @@ Completed
 
 <td>
 
-<button class="btn btn-sm btn-primary">
+<button class="btn btn-primary btn-sm">
 
 View
 
@@ -207,14 +234,9 @@ View
 </table>
 
 </div>
+<!-- NEW ORDER MODAL -->
 
-</main>
-
-</div>
-
-  <!-- New Order Modal -->
-
-<div class="modal fade" id="newOrderModal">
+<div class="modal fade" id="newOrderModal" tabindex="-1">
 
 <div class="modal-dialog modal-lg">
 
@@ -222,7 +244,13 @@ View
 
 <div class="modal-header">
 
-<h5>Create New Order</h5>
+<h5 class="modal-title">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+New Order
+
+</h5>
 
 <button
 type="button"
@@ -238,29 +266,47 @@ data-bs-dismiss="modal">
 
 <div class="col-md-6 mb-3">
 
-<label>Customer Name</label>
+<label class="form-label">
+
+Customer Name
+
+</label>
 
 <input
+id="customerName"
 type="text"
-class="form-control">
+class="form-control"
+placeholder="Enter customer name">
 
 </div>
 
 <div class="col-md-6 mb-3">
 
-<label>Phone Number</label>
+<label class="form-label">
+
+Phone Number
+
+</label>
 
 <input
+id="phoneNumber"
 type="text"
-class="form-control">
+class="form-control"
+placeholder="09XXXXXXXXX">
 
 </div>
 
 <div class="col-md-6 mb-3">
 
-<label>Platform</label>
+<label class="form-label">
 
-<select class="form-select">
+Platform
+
+</label>
+
+<select
+id="platform"
+class="form-select">
 
 <option>Facebook</option>
 
@@ -274,19 +320,30 @@ class="form-control">
 
 <div class="col-md-6 mb-3">
 
-<label>Product</label>
+<label class="form-label">
+
+Product
+
+</label>
 
 <input
+id="product"
 type="text"
-class="form-control">
+class="form-control"
+placeholder="Example: 30 Polaroids">
 
 </div>
 
 <div class="col-md-4 mb-3">
 
-<label>Quantity</label>
+<label class="form-label">
+
+Quantity
+
+</label>
 
 <input
+id="quantity"
 type="number"
 class="form-control">
 
@@ -294,9 +351,14 @@ class="form-control">
 
 <div class="col-md-4 mb-3">
 
-<label>Price</label>
+<label class="form-label">
+
+Total Price
+
+</label>
 
 <input
+id="price"
 type="number"
 class="form-control">
 
@@ -304,9 +366,15 @@ class="form-control">
 
 <div class="col-md-4 mb-3">
 
-<label>Payment</label>
+<label class="form-label">
 
-<select class="form-select">
+Payment
+
+</label>
+
+<select
+id="payment"
+class="form-select">
 
 <option>Paid</option>
 
@@ -316,13 +384,49 @@ class="form-control">
 
 </div>
 
-<div class="col-12">
+<div class="col-md-12 mb-3">
 
-<label>Notes</label>
+<label class="form-label">
+
+Production Status
+
+</label>
+
+<select
+id="status"
+class="form-select">
+
+<option>Waiting for Photos</option>
+
+<option>Layout</option>
+
+<option>Printing</option>
+
+<option>Cutting</option>
+
+<option>Packing</option>
+
+<option>Ready</option>
+
+<option>Completed</option>
+
+</select>
+
+</div>
+
+<div class="col-md-12">
+
+<label class="form-label">
+
+Notes
+
+</label>
 
 <textarea
+id="notes"
+rows="3"
 class="form-control"
-rows="3"></textarea>
+placeholder="Optional notes..."></textarea>
 
 </div>
 
@@ -333,6 +437,7 @@ rows="3"></textarea>
 <div class="modal-footer">
 
 <button
+type="button"
 class="btn btn-secondary"
 data-bs-dismiss="modal">
 
@@ -341,7 +446,11 @@ Cancel
 </button>
 
 <button
-class="btn btn-warning text-white">
+type="button"
+class="btn btn-warning text-white"
+id="saveOrderBtn">
+
+<i class="fa-solid fa-floppy-disk"></i>
 
 Save Order
 
@@ -354,6 +463,11 @@ Save Order
 </div>
 
 </div>
+</main>
+
+</div>
+
+<script src="orders.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
