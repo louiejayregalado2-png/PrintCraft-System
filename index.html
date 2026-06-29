@@ -11,98 +11,269 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <!-- CSS -->
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="d-flex">
+<div class="wrapper">
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <aside class="sidebar">
 
-        <h3 class="logo">
+        <div class="logo">
+
             <i class="fa-solid fa-store"></i>
-            Print & Craft
-        </h3>
+
+            <h3>Print & Craft</h3>
+
+            <span>Management System</span>
+
+        </div>
 
         <ul>
 
             <li class="active">
                 <i class="fa-solid fa-house"></i>
-                Dashboard
+                <span>Dashboard</span>
             </li>
 
             <li>
                 <i class="fa-solid fa-cart-shopping"></i>
-                Orders
+                <span>Orders</span>
             </li>
 
             <li>
                 <i class="fa-solid fa-box"></i>
-                Inventory
+                <span>Inventory</span>
             </li>
 
             <li>
                 <i class="fa-solid fa-users"></i>
-                Customers
+                <span>Customers</span>
             </li>
 
             <li>
-                <i class="fa-solid fa-chart-line"></i>
-                Reports
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Reports</span>
             </li>
 
             <li>
                 <i class="fa-solid fa-gear"></i>
-                Settings
+                <span>Settings</span>
             </li>
 
         </ul>
 
-    </div>
+    </aside>
 
-    <!-- Main Content -->
-    <div class="content">
+    <!-- Main -->
 
-        <h2>Dashboard</h2>
+    <main class="main">
 
-        <div class="row">
+        <!-- Topbar -->
 
-            <div class="col-md-3">
-                <div class="card-box">
-                    <h3>₱0</h3>
-                    <p>Today's Sales</p>
-                </div>
+        <div class="topbar">
+
+            <div>
+
+                <h2>Dashboard</h2>
+
+                <small>Welcome back, Admin 👋</small>
+
             </div>
 
-            <div class="col-md-3">
-                <div class="card-box">
-                    <h3>0</h3>
-                    <p>Pending Orders</p>
+            <button class="btn btn-warning text-white fw-bold">
+
+                <i class="fa-solid fa-plus"></i>
+
+                New Order
+
+            </button>
+
+        </div>
+
+        <!-- Cards -->
+
+        <div class="row g-4">
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div>
+
+                        <small>Today's Sales</small>
+
+                        <h3>₱0</h3>
+
+                    </div>
+
+                    <div class="card-icon orange">
+
+                        <i class="fa-solid fa-peso-sign"></i>
+
+                    </div>
+
                 </div>
+
             </div>
 
-            <div class="col-md-3">
-                <div class="card-box">
-                    <h3>0</h3>
-                    <p>Total Products</p>
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div>
+
+                        <small>Pending Orders</small>
+
+                        <h3>0</h3>
+
+                    </div>
+
+                    <div class="card-icon yellow">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                    </div>
+
                 </div>
+
             </div>
 
-            <div class="col-md-3">
-                <div class="card-box">
-                    <h3>0</h3>
-                    <p>Low Stock</p>
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div>
+
+                        <small>Total Products</small>
+
+                        <h3>0</h3>
+
+                    </div>
+
+                    <div class="card-icon blue">
+
+                        <i class="fa-solid fa-box"></i>
+
+                    </div>
+
                 </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div>
+
+                        <small>Low Stock</small>
+
+                        <h3>0</h3>
+
+                    </div>
+
+                    <div class="card-icon red">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
 
-    </div>
+        <!-- Recent Orders -->
+
+        <div class="table-card mt-5">
+
+            <div class="table-header">
+
+                <h4>Recent Orders</h4>
+
+                <button class="btn btn-outline-warning">
+
+                    View All
+
+                </button>
+
+            </div>
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Platform</th>
+                        <th>Total</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>ORD-0001</td>
+                        <td>Louie Jay</td>
+                        <td>Facebook</td>
+                        <td>₱350</td>
+
+                        <td>
+
+                            <span class="badge bg-warning">
+
+                                Pending
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>ORD-0002</td>
+                        <td>Andrea</td>
+                        <td>Shopee</td>
+                        <td>₱520</td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                Completed
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
 
 </div>
+
+<script src="app.js"></script>
 
 </body>
 </html>
